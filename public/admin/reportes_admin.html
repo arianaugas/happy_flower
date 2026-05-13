@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reportes — Admin Happy Flower</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/public/css/admin.css" />
+    <link rel="icon" type="image/png" href="/public/images/logo.jpeg">
+    
+</head>
+
+<body>
+
+    <div class="admin-wrapper">
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sb-brand">
+                <div class="sb-brand-icon"><i class="bi bi-flower1"></i></div>
+                <div class="sb-brand-text">Happy <span>Flower</span></div>
+            </div>
+            <nav class="sb-nav">
+                <span class="sb-section-title">Principal</span>
+                <a href="/admin" class="sb-item" data-label="Inicio"><i class="bi bi-grid-1x2"></i><span
+                        class="sb-item-label">Inicio</span></a>
+                <a href="/admin/pedidos" class="sb-item" data-label="Pedidos"><i class="bi bi-bag-check"></i><span
+                        class="sb-item-label">Pedidos</span></a>
+                <a href="/admin/productos" class="sb-item" data-label="Inventario"><i class="bi bi-box-seam"></i><span
+                        class="sb-item-label">Inventario</span></a>
+                <a href="/admin/usuarios" class="sb-item" data-label="Usuarios"><i class="bi bi-people"></i><span
+                        class="sb-item-label">Usuarios</span></a>
+                <hr class="sb-divider" />
+                <span class="sb-section-title">Finanzas</span>
+                <a href="/admin/ventas" class="sb-item" data-label="Ventas"><i class="bi bi-graph-up-arrow"></i><span
+                        class="sb-item-label">Ventas y Ganancias</span></a>
+                <a href="/admin/reportes" class="sb-item active" data-label="Reportes"><i
+                        class="bi bi-bar-chart-line"></i><span class="sb-item-label">Reportes</span></a>
+                <hr class="sb-divider" />
+                <span class="sb-section-title">Tienda</span>
+                <a href="/" target="_blank" class="sb-item" data-label="Ver tienda"><i
+                        class="bi bi-box-arrow-up-right"></i><span class="sb-item-label">Ver tienda</span></a>
+            </nav>
+            <div class="sb-footer">
+                <div class="sb-user">
+                    <div class="sb-user-info">
+                        <div class="sb-user-name" id="adminNombre">Administrador</div>
+                        <div class="sb-user-role">Panel Admin</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="admin-content" id="adminContent">
+
+            <header class="admin-topbar">
+                <button class="topbar-toggle" id="btnToggleSidebar"><i class="bi bi-list"></i></button>
+                <div class="topbar-breadcrumb">
+                    <span>Panel Admin</span><i class="bi bi-chevron-right"></i><span>Reportes</span>
+                </div>
+                <nav class="topbar-nav">
+                    <a href="/admin" class="topbar-link">Inicio</a>
+                    <a href="/admin/pedidos" class="topbar-link">Pedidos</a>
+                    <a href="/admin/productos" class="topbar-link">Inventario</a>
+                    <a href="/admin/usuarios" class="topbar-link">Usuarios</a>
+                    <a href="/admin/ventas" class="topbar-link">Ventas</a>
+                    <a href="/admin/reportes" class="topbar-link active-page">Reportes</a>
+                </nav>
+                <div class="topbar-actions">
+                    <div class="topbar-user">
+                        <span class="topbar-name d-none d-md-inline" id="topbarNombre">Admin</span>
+                    </div>
+                    <button class="btn-logout" id="btnLogout"><i class="bi bi-box-arrow-right"></i><span
+                            class="d-none d-sm-inline">Salir</span></button>
+                </div>
+            </header>
+
+            <div class="admin-page-header">
+                <div class="page-header-badge"><i class="bi bi-bar-chart-line"></i> Análisis</div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/admin">Inicio</a></li>
+                        <li class="breadcrumb-item active">Reportes</li>
+                    </ol>
+                </nav>
+                <h1 class="page-header-title">Reportes de Ventas</h1>
+                <p class="page-header-subtitle">Productos más vendidos y análisis de ventas por período con filtrado
+                    interactivo de fechas.</p>
+            </div>
+
+            <main class="admin-main">
+
+                <!-- TABS -->
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="top">
+                        <i class="bi bi-trophy me-1"></i> Top Productos
+                    </button>
+                    <button class="admin-tab" data-tab="periodo">
+                        <i class="bi bi-calendar-range me-1"></i> Ventas por Período
+                    </button>
+                </div>
+
+                <!-- ── TAB: TOP PRODUCTOS ── -->
+                <div id="tabTop">
+
+                    <!-- Stats top -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div><i class="bi bi-bag"></i></div>
+                                <div>
+                                    <div class="stat-label">Unidades vendidas</div>
+                                    <div class="stat-value" id="statUnidades">—</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div><i class="bi bi-cash-coin"></i></div>
+                                <div>
+                                    <div class="stat-label">Ingresos generados</div>
+                                    <div class="stat-value" id="statIngresos">—</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div><i class="bi bi-receipt"></i></div>
+                                <div>
+                                    <div class="stat-label">Pedidos involucrados</div>
+                                    <div class="stat-value" id="statPedidosTop">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-title"><i class="bi bi-trophy"></i> Productos más vendidos</div>
+                            <div class="d-flex gap-2">
+                                <button class="btn-admin-sm active primary" data-limit="5">Top 5</button>
+                                <button class="btn-admin-sm" data-limit="10">Top 10</button>
+                                <button class="btn-admin-sm" data-limit="20">Top 20</button>
+                            </div>
+                        </div>
+                        <div class="admin-card-body p-0">
+                            <div class="table-responsive table-responsive--scroll">
+                                <table class="table-admin">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Producto</th>
+                                            <th>Precio</th>
+                                            <th>Unidades</th>
+                                            <th>Ingresos</th>
+                                            <th>Pedidos</th>
+                                            <th>Tendencia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyTopProductos">
+                                        <tr>
+                                            <td colspan="7" class="text-center py-5 text-muted"><span
+                                                    class="spinner-border spinner-border-sm me-2"></span>Cargando...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── TAB: VENTAS POR PERÍODO ── -->
+                <div id="tabPeriodo" style="display:none">
+
+                    <!-- Filtros -->
+                    <div class="admin-card mb-3">
+                        <div class="admin-card-body">
+                            <div class="d-flex align-items-center gap-3 flex-wrap">
+                                <div class="d-flex gap-2">
+                                    <button class="btn-admin-secondary" data-rango="7">Últimos 7 días</button>
+                                    <button class="btn-admin-primary" data-rango="30">Últimos 30 días</button>
+                                    <button class="btn-admin-secondary" data-rango="90">Últimos 90 días</button>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="date" id="fechaDesde" class="filter-date-input" />
+                                    <span>—</span>
+                                    <input type="date" id="fechaHasta" class="filter-date-input" />
+                                    <button class="btn-admin-primary" id="btnFiltrarPeriodo">
+                                        <i class="bi bi-search"></i> Filtrar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats período -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-6 col-md-4 col-xl-2">
+                            <div class="stat-card">
+                                <div ><i class="bi bi-bag-check"></i></div>
+                                <div>
+                                    <div class="stat-label">Total pedidos</div>
+                                    <div class="stat-value" id="statTotalPedidos">—</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-xl-2">
+                            <div class="stat-card">
+                                <div ><i class="bi bi-cash-coin"></i></div>
+                                <div>
+                                    <div class="stat-label">Ingresos</div>
+                                    <div class="stat-value" id="statIngresosTotal">—</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-xl-2">
+                            <div class="stat-card">
+                                <div ><i class="bi bi-box-seam"></i></div>
+                                <div>
+                                    <div class="stat-label">Inversión total</div>
+                                    <div class="stat-value" id="statInversionTotal">—</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-xl-2">
+                            <div class="stat-card">
+                                <div><i class="bi bi-graph-up"></i></div>
+                                <div>
+                                    <div class="stat-label">Ganancia neta</div>
+                                    <div class="stat-value" id="statGananciaNeta">—</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-xl-2">
+                            <div class="stat-card">
+                                <div ><i class="bi bi-check-circle"></i></div>
+                                <div>
+                                    <div class="stat-label">Entregados</div>
+                                    <div class="stat-value" id="statEntregados">—</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-xl-2">
+                            <div class="stat-card">
+                                <div ><i class="bi bi-x-circle"></i></div>
+                                <div>
+                                    <div class="stat-label">Cancelados</div>
+                                    <div class="stat-value" id="statCancelados">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabla ventas por día -->
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-title"><i class="bi bi-calendar-range"></i> Ventas por día</div>
+                        </div>
+                        <div class="admin-card-body p-0">
+                            <div class="table-responsive table-responsive--scroll">
+                                <table class="table-admin">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Pedidos</th>
+                                            <th>Entregados</th>
+                                            <th>Cancelados</th>
+                                            <th>Ingresos</th>
+                                            <th>Tendencia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyPeriodo">
+                                        <tr>
+                                            <td colspan="6" class="text-center py-5 text-muted"><span
+                                                    class="spinner-border spinner-border-sm me-2"></span>Cargando...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot id="tfootPeriodo"></tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /tabs -->
+
+            </main>
+
+            <footer class="admin-footer">
+                <span>Happy Flower &copy; 2026 — Panel de Administración</span>
+                <span>Desarrollado por estudiantes · Trujillo, Perú</span>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/public/js/admin_scr.js"></script>
+    <script src="/public/js/reportes_admin_scr.js"></script>
+</body>
+
+</html>

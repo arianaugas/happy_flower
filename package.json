@@ -1,0 +1,33 @@
+{
+  "name": "happy-flower",
+  "version": "1.0.0",
+  "description": "Sistema web de registro de ventas - Florería Happy Flower",
+  "main": "servidor.js",
+  "scripts": {
+    "start": "node servidor.js",
+    "dev": "nodemon servidor.js"
+  },
+  "keywords": [
+    "floreria",
+    "ventas",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^2.10.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.22.1",
+    "express-mysql-session": "^3.0.3",
+    "express-session": "^1.18.0",
+    "morgan": "^1.10.1",
+    "multer": "^2.1.1",
+    "mysql2": "^3.11.3",
+    "streamifier": "^0.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

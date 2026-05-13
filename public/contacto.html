@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Contacto – Flor & Arte. Escríbenos, llámanos o visítanos en Lima, Perú." />
+    <title>Contacto – Flor & Arte</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/public/css/contacto.css">
+    <link rel="stylesheet" href="/public/css/global.css">
+    <link rel="icon" type="image/png" href="/public/images/logo.jpeg">
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Ir al contenido principal</a>
+    <!-- MENU VAR -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <nav class="sidebar" id="sidebar" aria-label="Menú lateral">
+        <div class="sidebar-header">
+            <span class="sidebar-brand">Happy <span>Flower</span></span>
+            <button class="sidebar-close" aria-label="Cerrar menú"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <span class="sidebar-section-title">Navegación</span>
+        <a href="/" class="sidebar-nav-item"><i class="bi bi-house-door"></i> Inicio</a>
+        <a href="/catalogo" class="sidebar-nav-item"><i class="bi bi-grid-3x3-gap"></i> Catálogo</a>
+        <a href="/pedidos" class="sidebar-nav-item"><i class="bi bi-bag-check"></i> Mis Pedidos</a>
+        <a href="/carrito" class="sidebar-nav-item"><i class="bi bi-cart3"></i> Carrito</a>
+        <a href="/contacto" class="sidebar-nav-item"><i class="bi bi-envelope"></i> Contacto</a>
+        <hr class="sidebar-divider">
+        <span class="sidebar-section-title">Síguenos</span>
+
+        <div class="sidebar-social">
+            <a href="https://www.instagram.com/happyflowerfloreriadetalles?igsh=MTRqdGt0ZmE3ODAwYQ=="
+                aria-label="Instagram" target="_blank">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://www.facebook.com/share/1Cd3KC6Na6/" aria-label="Facebook" target="_blank">
+                <i class="bi bi-facebook"></i>
+            </a>
+            <a href="https://www.tiktok.com/@happyflowerfloreriatrux?_r=1&_t=ZS-95wmJmb7Lij" aria-label="TikTok"
+                target="_blank">
+                <i class="bi bi-tiktok"></i>
+            </a>
+            <a href="https://wa.me/c/51991419078" aria-label="WhatsApp" target="_blank"><i
+                    class="bi bi-whatsapp"></i></a>
+        </div>
+    </nav>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar navbar-main navbar-expand-lg" id="mainNav" aria-label="Navegación principal">
+            <div class="container">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="sidebar-toggle" aria-label="Abrir menú lateral"><i class="bi bi-list"></i></button>
+                    <a href="/" class="navbar-brand-logo">Happy <span>Flower</span></a>
+                </div>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navCollapse" aria-label="Menú">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navCollapse">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+                        <li class="nav-item"><a class="nav-link nav-link-main" href="/">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-main" href="/catalogo">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-main" href="/pedidos">Pedidos</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-main active" href="/contacto"
+                                aria-current="page">Contacto</a></li>
+                        <li class="nav-item" id="liNavSesion">
+                            <a class="nav-link nav-link-main" href="/login">
+                                <i class="bi bi-person me-1"></i>Iniciar sesión
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center gap-3">
+                        
+                        <a href="/carrito" class="cart-btn" aria-label="Ver carrito">
+                            <i class="bi bi-bag-heart"></i>
+                            <span class="cart-badge">2</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!--PRESENTACIÓN -->
+    <div class="page-hero">
+        <div class="container">
+            <nav aria-label="Ruta de navegación">
+                <ol class="breadcrumb mb-3">
+                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item active">Contacto</li>
+                </ol>
+            </nav>
+            <h1><i class="bi bi-envelope-heart me-2"></i>¡Contactanos!</h1>
+            <p>Estamos aquí para ayudarte a crear el arreglo perfecto para tu ocasión especial. Escríbenos, llámanos o
+                visítanos en nuestra tienda en Trujillo.</p>
+        </div>
+    </div>
+
+    <!--  MAIN  -->
+    <main id="main-content">
+
+        <!-- REDES SOCIALES  -->
+        <section class="py-5" aria-labelledby="social-title">
+            <div class="container">
+
+                <div class="text-center mb-2">
+                    <h2 id="social-title">
+                        Síguenos para más información
+                    </h2>
+                    <p>Encuentra las últimas novedades</p>
+                </div>
+
+                <div class="social-grid">
+                    <a href="https://wa.me/c/51991419078" target="_blank" rel="noopener" class="social-card whatsapp"
+                        aria-label="Contactar por WhatsApp">
+                        <div class="social-card-icon"><i class="bi bi-whatsapp"></i></div>
+                        <div class="social-card-name">WhatsApp</div>
+                        <div class="social-card-handle">+51 991 419 078</div>
+                        <span class="social-card-btn">Escribir ahora</span>
+                    </a>
+
+                    <a href="https://www.instagram.com/happyflowerfloreriadetalles?igsh=MTRqdGt0ZmE3ODAwYQ=="
+                        target="_blank" rel="noopener" class="social-card instagram" aria-label="Ver Instagram">
+                        <div class="social-card-icon"><i class="bi bi-instagram"></i></div>
+                        <div class="social-card-name">Instagram</div>
+                        <div class="social-card-handle">@happyflowerfloreria</div>
+                        <span class="social-card-btn">Ver perfil</span>
+                    </a>
+
+                    <a href="https://www.facebook.com/share/1Cd3KC6Na6/" target="_blank" rel="noopener"
+                        class="social-card facebook" aria-label="Ver Facebook">
+                        <div class="social-card-icon"><i class="bi bi-facebook"></i></div>
+                        <div class="social-card-name">Facebook</div>
+                        <div class="social-card-handle">@happyflowerfloreria</div>
+                        <span class="social-card-btn">Ver página</span>
+                    </a>
+
+                    <a href="https://www.tiktok.com/@happyflowerfloreriatrux?_r=1&_t=ZS-95wmJmb7Lij" target="_blank"
+                        rel="noopener" class="social-card tiktok" aria-label="Ver TikTok">
+                        <div class="social-card-icon"><i class="bi bi-tiktok"></i></div>
+                        <div class="social-card-name">TikTok</div>
+                        <div class="social-card-handle">@happyflowerfloreria</div>
+                        <span class="social-card-btn">Ver videos</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- INFO DE CONTACTO -->
+        <section class="py-5" aria-labelledby="info-title">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title" id="info-title">Información de contacto</h2>
+                    <p class="section-subtitle">Múltiples formas de comunicarte con nosotros</p>
+                    <div class="divider-flower"><span>❀</span></div>
+                </div>
+                <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-lg-5">
+
+                    <!-- Dirección -->
+                    <div class="col">
+                        <div class="info-card">
+                            <div class="info-icon location"><i class="bi bi-geo-alt-fill"></i></div>
+                            <h3 class="info-title">Tienda</h3>
+                            <p class="info-value">Ubicanos en <br>Av.metropolitana II - San isidro</p>
+                            <a href="https://maps.app.goo.gl/nbk3s4i8UZTBHAou7" target="_blank" rel="noopener"
+                                class="info-btn"><i class="bi bi-map"></i> Cómo llegar</a>
+                        </div>
+                    </div>
+                    <!-- Horario -->
+                    <div class="col">
+                        <div class="info-card">
+                            <div class="info-icon clock"><i class="bi bi-clock-fill"></i></div>
+                            <h3 class="info-title">Horario</h3>
+                            <p class="info-value">
+                                Lun–Vie: 8am–8pm<br>
+                                Sáb: 9am–6pm<br>
+                                Dom: 10am–4pm
+                            </p>
+                            <span class="open-badge"><i class="bi bi-circle-fill me-1"
+                                    style="font-size:.5rem"></i>Abierto ahora</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!--  PREGUNTAS FRECUENTES  -->
+        <section class="py-5" aria-labelledby="faq-title">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title" id="faq-title">Preguntas frecuentes</h2>
+                    <p class="section-subtitle">Todo lo que necesitas saber antes de hacer tu pedido</p>
+                    <div class="divider-flower"><span>❀</span></div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq1"
+                                aria-expanded="true" aria-controls="faq1">
+                                ¿Realizan envíos el mismo día?
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                            <div id="faq1" class="collapse show">
+                                <p class="faq-answer">Sí, realizamos envíos el mismo día en Trujillo San Isidro para
+                                    pedidos realizados antes de las 3:00 pm. Los pedidos después de ese horario se
+                                    entregan al día siguiente. Para zonas fuera de Trujillo, coordinar con anticipación.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq2"
+                                aria-expanded="false" aria-controls="faq2">
+                                ¿Puedo personalizar mi arreglo floral?
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                            <div id="faq2" class="collapse">
+                                <p class="faq-answer">¡Por supuesto! Ofrecemos arreglos 100% personalizados. Puedes
+                                    elegir las flores, colores, tipo de presentación (bouquet, caja, canasta) y añadir
+                                    un mensaje en tarjeta. Escríbenos por WhatsApp para una cotización sin compromiso.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq3"
+                                aria-expanded="false" aria-controls="faq3">
+                                ¿Cuáles son los métodos de pago aceptados?
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                            <div id="faq3" class="collapse">
+                                <p class="faq-answer">Aceptamos Yape, Plin y efectivo contra entrega.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq4"
+                                aria-expanded="false" aria-controls="faq4">
+                                ¿Con cuánta anticipación debo hacer mi pedido para un evento?
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                            <div id="faq4" class="collapse">
+                                <p class="faq-answer">Para eventos (bodas, graduaciones, cumpleaños grandes),
+                                    recomendamos realizar el pedido con al menos 5 días de anticipación. Para arreglos
+                                    del catálogo estándar, con 24 horas es suficiente.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq6"
+                                aria-expanded="false" aria-controls="faq6">
+                                ¿Puedo añadir un regalo adicional al arreglo?
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                            <div id="faq6" class="collapse">
+                                <p class="faq-answer">Sí, ofrecemos complementos como chocolates, bebidas y tarjetas
+                                    personalizadas. Consulta disponibilidad al momento de realizar
+                                    tu pedido por WhatsApp o en el formulario de contacto.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand">Happy <span>Flower</span></div>
+                    <p class="footer-desc">Arreglos florales únicos que transmiten emociones y convierten momentos en
+                        recuerdos eternos. Trujillo, Perú.</p>
+                    <div class="footer-social mt-3">
+                        <a href="https://www.instagram.com/happyflowerfloreriadetalles?igsh=MTRqdGt0ZmE3ODAwYQ=="
+                            aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.facebook.com/share/1Cd3KC6Na6/" aria-label="Facebook"><i
+                                class="bi bi-facebook"></i></a>
+                        <a href="https://www.tiktok.com/@happyflowerfloreriatrux?_r=1&_t=ZS-95wmJmb7Lij"
+                            aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                        <a href="https://wa.me/c/51991419078" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-6">
+                    <p class="footer-title">Páginas</p>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="/">Inicio</a></li>
+                        <li><a href="/catalogo">Catálogo</a></li>
+                        <li><a href="/">Ofertas</a></li>
+                        <li><a href="/pedidos">Pedidos</a></li>
+                        <li><a href="/carrito">Carrito</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                    <p class="footer-title">Contacto rápido</p>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2 text-success"></i>Av.metropolitana II - San isidro
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <p class="footer-title">Horario</p>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-1">Lunes – Sábados: <strong>10:00 am – 9:00 pm</strong></li>
+                        <li class="mb-1">Domingos: <strong>10:00 am – 6:00 pm</strong></li>
+                        <li class="mb-1">Feriados: <strong>Consultar</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <span>© 2026 Página desarrollada por estudiantes.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Flotantes -->
+    <a href="https://wa.me/51987654321" target="_blank" rel="noopener" class="whatsapp-float"
+        aria-label="Contactar por WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+    <button class="back-top" id="backTop" aria-label="Volver arriba">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/public/js/global.js"></script>
+    <script src="/public/js/contacto_scr.js"> </script>
+</body>
+
+</html>

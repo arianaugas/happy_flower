@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Carrito de compras – hAPPY flower" />
+    <title>Carrito – Happy Flower</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/public/css/carrito.css">
+    <link rel="stylesheet" href="/public/css/global.css">
+    <link rel="icon" type="image/png" href="/public/images/logo.jpeg">
+
+</head>
+
+<body>
+
+    <a href="#main-content" class="skip-link">Ir al contenido principal</a>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <nav class="sidebar" id="sidebar" aria-label="Menú lateral">
+        <div class="sidebar-header">
+            <span class="sidebar-brand">Happy <span>Flower</span></span>
+            <button class="sidebar-close" aria-label="Cerrar menú"><i class="bi bi-x-lg"></i></button>
+        </div>
+
+        <span class="sidebar-section-title">Navegación</span>
+        <a href="/" class="sidebar-nav-item"><i class="bi bi-house-door"></i> Inicio</a>
+        <a href="/catalogo" class="sidebar-nav-item"><i class="bi bi-grid-3x3-gap"></i> Catálogo</a>
+        <a href="/pedidos" class="sidebar-nav-item"><i class="bi bi-bag-check"></i> Mis Pedidos</a>
+        <a href="/carrito" class="sidebar-nav-item"><i class="bi bi-cart3"></i> Carrito <span
+                class="ms-auto badge rounded-pill text-bg-danger">0</span></a>
+        <a href="/contacto" class="sidebar-nav-item"><i class="bi bi-envelope"></i> Contacto</a>
+
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-social">
+            <a href="/contacto" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="/contacto" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="/contacto" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+            <a href="/contacto" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+        </div>
+    </nav>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar navbar-main navbar-expand-lg" id="mainNav" aria-label="Navegación principal">
+            <div class="container">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="sidebar-toggle" aria-label="Abrir menú"><i class="bi bi-list"></i></button>
+                    <a href="/" class="navbar-brand-logo">Happy <span>Flower</span></a>
+                </div>
+
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navCollapse" aria-label="Menú">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navCollapse">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+                        <li class="nav-item"><a class="nav-link nav-link-main" href="/">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-main" href="/catalogo">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-main" href="/pedidos">Pedidos</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-main" href="/contacto">Contacto</a></li>
+                        <li class="nav-item" id="liNavSesion">
+                            <a class="nav-link nav-link-main" href="/login">
+                                <i class="bi bi-person me-1"></i>Iniciar sesión
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center gap-3">
+                        <a href="/carrito" class="cart-btn" aria-label="Carrito">
+                            <i class="bi bi-bag-heart"></i>
+                            <span class="cart-badge">2</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <div class="container">
+            <nav aria-label="Ruta de navegación">
+                <ol class="breadcrumb mb-2">
+                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item active">Carrito</li>
+                </ol>
+            </nav>
+            <h1><i class="bi bi-bag-heart me-2"></i>Mi Carrito</h1>
+        </div>
+    </div>
+
+
+    <main id="main-content">
+        <div class="container py-4">
+
+            <div class="checkout-steps" aria-label="Pasos del proceso de compra">
+                <div class="step active">
+                    <div class="step-circle" aria-current="step">1</div>
+                    <span class="step-label">Carrito</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle">2</div>
+                    <span class="step-label">Entrega</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Pago</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle">4</div>
+                    <span class="step-label">Confirmación</span>
+                </div>
+            </div>
+
+
+            <div class="cart-actions">
+                <a href="/catalogo" class="btn-continue"><i class="bi bi-arrow-left me-1"></i>Seguir comprando</a>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-lg-8">
+                    <div class="cart-card">
+                        <h2>
+                            Productos en el carrito
+                            <span class="badge rounded-pill text-bg-success ms-1">0</span>
+                        </h2>
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <aside class="summary-card" aria-label="Resumen de orden">
+                        <h2 class="summary-title">Resumen de orden</h2>
+
+                        <div class="summary-row">
+                            <span class="label">Total </span>
+                            <span class="value" id="subtotal">S/ 0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="label">Envío</span>
+                            <span class="value text-success">Gratis</span>
+                        </div>
+
+                        <div class="summary-total">
+                            <span class="label">Total</span>
+                            <span class="value" id="total">S/ 0.00</span>
+                        </div>
+
+                        <button class="btn-checkout" type="button" id="btnPago">
+                            <i class="bi bi-lock-fill me-2"></i>Proceder al pago
+                        </button>
+
+                        <!-- Formas de pago -->
+                        <div class="mt-3 text-center">
+                            <p class="small text-muted mb-1">Métodos de pago aceptados</p>
+                            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                <span class="badge bg-light text-dark border"><i
+                                        class="bi bi-phone me-1 text-success"></i>Yape</span>
+                                <span class="badge bg-light text-dark border"><i
+                                        class="bi bi-phone me-1 text-primary"></i>Plin</span>
+                                <span class="badge bg-light text-dark border"><i
+                                        class="bi bi-cash-coin me-1 text-warning"></i>BCP</span>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-brand-sm">Happy <span>Flower</span></div>
+            <p class="mt-2">© 2026 Página desarrolada por estudiantes. Trujillo, Perú · <a href="/">Inicio</a> · <a
+                    href="/catalogo" style="color:var(--verde-claro)">Catálogo</a></p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/51987654321" target="_blank" rel="noopener" class="whatsapp-float" aria-label="WhatsApp"><i
+            class="bi bi-whatsapp"></i></a>
+    <button class="back-top" id="backTop" aria-label="Volver arriba"><i class="bi bi-arrow-up"></i></button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/public/js/global.js"></script>
+    <script src="/public/js/carrito_scr.js"></script>
+</body>
+
+</html>

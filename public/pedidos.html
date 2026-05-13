@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Mis pedidos – Happy Flower" />
+    <title>Mis Pedidos – Happy Flower</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/public/css/pedidos.css">
+    <link rel="stylesheet" href="/public/css/global.css">
+    <link rel="icon" type="image/png" href="/public/images/logo.jpeg">
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Ir al contenido principal</a>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <nav class="sidebar" id="sidebar" aria-label="Menú lateral">
+        <div class="sidebar-header">
+            <span class="sidebar-brand">Happy <span>Flower</span></span>
+            <button class="sidebar-close" aria-label="Cerrar menú"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <span class="sidebar-section-title">Navegación</span>
+        <a href="/" class="sidebar-nav-item"><i class="bi bi-house-door"></i> Inicio</a>
+        <a href="/catalogo" class="sidebar-nav-item"><i class="bi bi-grid-3x3-gap"></i> Catálogo</a>
+        <a href="/pedidos" class="sidebar-nav-item"><i class="bi bi-bag-check"></i> Mis Pedidos</a>
+        <a href="/carrito" class="sidebar-nav-item"><i class="bi bi-cart3"></i> Carrito</a>
+        <a href="/contacto" class="sidebar-nav-item"><i class="bi bi-envelope"></i> Contacto</a>
+        <hr class="sidebar-divider">
+        <div class="sidebar-social">
+            <a href="/contacto" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="/contacto" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="/contacto" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+            <a href="/contacto" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+        </div>
+    </nav>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar navbar-main navbar-expand-lg" id="mainNavPedidos" aria-label="Navegación principal">
+            <div class="container">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="sidebar-toggle" aria-label="Abrir menú"><i class="bi bi-list"></i></button>
+                    <a href="/" class="navbar-brand-logo">Happy <span>Flower</span></a>
+                </div>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navCollapse" aria-label="Menú">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navCollapse">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+                        <li class="nav-item"><a class="nav-link nav-link-main" href="/">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-main" href="/catalogo">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-main active" href="/pedidos"
+                                aria-current="page">Pedidos</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-main" href="/contacto">Contacto</a></li>
+                        <li class="nav-item" id="liNavSesion">
+                            <a class="nav-link nav-link-main" href="/login">
+                                <i class="bi bi-person me-1"></i>Iniciar sesión
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center gap-3">
+                        <a href="/carrito" class="cart-btn" aria-label="Carrito">
+                            <i class="bi bi-bag-heart"></i>
+                            <span class="cart-badge">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <div class="container">
+            <nav aria-label="Ruta de navegación">
+                <ol class="breadcrumb mb-2">
+                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item active">Mis Pedidos</li>
+                </ol>
+            </nav>
+            <h1><i class="bi bi-bag-check me-2"></i>Mis Pedidos</h1>
+            <p class="mt-1">Historial de tus compras</p>
+        </div>
+    </div>
+
+    <main id="main-content">
+        <div class="container py-4">
+            <nav class="order-tabs" role="tablist" aria-label="Filtrar pedidos">
+                <button class="order-tab active" role="tab" aria-selected="true" id="btnMostrarTodo">Pedidos</button>
+            </nav>
+            <div class="row g-4">
+                <div class="col-lg-8" id="orders-list">
+                    <p class="text-muted text-center py-4">
+                        <span class="spinner-border spinner-border-sm me-2"></span>Cargando...
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL SEGUIMIENTO -->
+<div class="modal fade" id="modalSeguimiento" tabindex="-1" aria-labelledby="modalSeguimientoLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="background:#1a1a1a;border:1px solid rgba(255,255,255,.1)">
+
+            <div class="modal-header" style="background:#2d6a4f;border:none">
+                <h2 class="modal-title text-white fs-6" id="modalSeguimientoLabel">
+                    <i class="bi bi-clock-history me-2"></i>Seguimiento del pedido
+                </h2>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body p-4" id="modalSeguimientoBody">
+                <p class="text-center text-muted py-3">
+                    <span class="spinner-border spinner-border-sm me-2"></span>Cargando...
+                </p>
+            </div>
+
+            <div class="modal-footer" style="border-top:1px solid rgba(255,255,255,.08)">
+                <a href="https://wa.me/51987654321" target="_blank" rel="noopener"
+                    class="btn btn-success rounded-pill btn-sm px-3">
+                    <i class="bi bi-whatsapp me-1"></i>Consultar por WhatsApp
+                </a>
+                <button type="button" class="btn btn-outline-secondary rounded-pill btn-sm"
+                    data-bs-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+    <footer>
+        <div class="container">
+            <div class="footer-brand-sm">Happy <span>Flower</span></div>
+            <p class="mt-2">© 2026 Página desarrolada por estudiantes. Trujillo, Perú · <a href="/">Inicio</a> · <a
+                    href="/catalogo">Catálogo</a></p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/51987654321" target="_blank" rel="noopener" class="whatsapp-float" aria-label="WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/public/js/global.js"></script>
+    <script src="/public/js/pedidos_scr.js"></script>
+    
+</body>
+
+</html>

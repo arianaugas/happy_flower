@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pedidos — Admin Happy Flower</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/public/css/admin.css" />
+    <link rel="icon" type="image/png" href="/public/images/logo.jpeg">
+</head>
+<body>
+
+<div class="admin-wrapper">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sb-brand">
+            <div class="sb-brand-icon"><i class="bi bi-flower1"></i></div>
+            <div class="sb-brand-text">Happy <span>Flower</span></div>
+        </div>
+        <nav class="sb-nav">
+            <span class="sb-section-title">Principal</span>
+            <a href="/admin"           class="sb-item" data-label="Inicio"><i class="bi bi-grid-1x2"></i><span class="sb-item-label">Inicio</span></a>
+            <a href="/admin/pedidos"   class="sb-item active" data-label="Pedidos"><i class="bi bi-bag-check"></i><span class="sb-item-label">Pedidos</span></a>
+            <a href="/admin/productos" class="sb-item" data-label="Inventario"><i class="bi bi-box-seam"></i><span class="sb-item-label">Inventario</span></a>
+            <a href="/admin/usuarios"  class="sb-item" data-label="Usuarios"><i class="bi bi-people"></i><span class="sb-item-label">Usuarios</span></a>
+            <hr class="sb-divider" />
+            <span class="sb-section-title">Finanzas</span>
+            <a href="/admin/ventas"    class="sb-item" data-label="Ventas"><i class="bi bi-graph-up-arrow"></i><span class="sb-item-label">Ventas y Ganancias</span></a>
+            <a href="/admin/reportes"  class="sb-item" data-label="Reportes"><i class="bi bi-bar-chart-line"></i><span class="sb-item-label">Reportes</span></a>
+            <hr class="sb-divider" />
+            <span class="sb-section-title">Tienda</span>
+            <a href="/" target="_blank" class="sb-item" data-label="Ver tienda"><i class="bi bi-box-arrow-up-right"></i><span class="sb-item-label">Ver tienda</span></a>
+        </nav>
+        <div class="sb-footer">
+            <div class="sb-user">
+                <div class="sb-user-info">
+                    <div class="sb-user-name" id="adminNombre">Administrador</div>
+                    <div class="sb-user-role">Panel Admin</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <div class="admin-content" id="adminContent">
+
+        <!-- TOPBAR -->
+        <header class="admin-topbar">
+            <button class="topbar-toggle" id="btnToggleSidebar"><i class="bi bi-list"></i></button>
+            <div class="topbar-breadcrumb">
+                <span>Panel Admin</span><i class="bi bi-chevron-right"></i><span>Pedidos</span>
+            </div>
+            <nav class="topbar-nav">
+                <a href="/admin"           class="topbar-link">Inicio</a>
+                <a href="/admin/pedidos"   class="topbar-link active-page">Pedidos</a>
+                <a href="/admin/productos" class="topbar-link">Inventario</a>
+                <a href="/admin/usuarios"  class="topbar-link">Usuarios</a>
+                <a href="/admin/ventas"    class="topbar-link">Ventas</a>
+                <a href="/admin/reportes"  class="topbar-link">Reportes</a>
+            </nav>
+            <div class="topbar-actions">
+                <div class="topbar-user">
+                    <span class="topbar-name d-none d-md-inline" id="topbarNombre">Admin</span>
+                </div>
+                <button class="btn-logout" id="btnLogout"><i class="bi bi-box-arrow-right"></i><span class="d-none d-sm-inline">Salir</span></button>
+            </div>
+        </header>
+
+        <!-- PAGE HEADER -->
+        <div class="admin-page-header">
+            <div class="page-header-badge"><i class="bi bi-bag-check"></i> Gestión de Pedidos</div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/admin">Inicio</a></li>
+                    <li class="breadcrumb-item active">Pedidos</li>
+                </ol>
+            </nav>
+            <h1 class="page-header-title">Pedidos</h1>
+            <p class="page-header-subtitle">Historial completo de pedidos. Filtra, consulta el detalle y actualiza estados.</p>
+        </div>
+
+        <!-- MAIN -->
+        <main class="admin-main">
+            <div class="row g-3">
+
+                <!-- FILTROS LATERAL -->
+                <div class="col-lg-3 col-xl-2">
+                    <div class="filter-panel">
+                        <div class="filter-panel-title"><i class="bi bi-funnel"></i> Filtros</div>
+
+                        <div class="filter-section">
+                            <label class="filter-section-label">Estado</label>
+                            <select class="filter-select" id="filtroEstadoPedido">
+                                <option value="">Todos los estados</option>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="preparacion">En preparación</option>
+                                <option value="listo">Listo</option>
+                                <option value="camino">En camino</option>
+                                <option value="entregado">Entregado</option>
+                                <option value="cancelado">Cancelado</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-section">
+                            <label class="filter-section-label">Desde</label>
+                            <input type="date" class="filter-date-input" id="filtroDesde" />
+                        </div>
+
+                        <div class="filter-section">
+                            <label class="filter-section-label">Hasta</label>
+                            <input type="date" class="filter-date-input" id="filtroHasta" />
+                        </div>
+
+                        <button class="btn-admin-primary w-100 justify-content-center" id="btnFiltrarPedidos">
+                            <i class="bi bi-search"></i> Aplicar filtros
+                        </button>
+                        <button class="btn-admin-secondary w-100 justify-content-center mt-2" id="btnLimpiarFiltros">
+                            <i class="bi bi-x-circle"></i> Limpiar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TABLA -->
+                <div class="col-lg-9 col-xl-10">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-title"><i class="bi bi-list-ul"></i> Listado de pedidos</div>
+                            <div class="search-wrap" style="width:220px">
+                                <i class="bi bi-search"></i>
+                                <input type="text" placeholder="Buscar pedido..." id="buscarPedido" />
+                            </div>
+                        </div>
+                        <div class="admin-card-body p-0">
+                            <div class="table-responsive table-responsive--scroll">
+                                <table class="table-admin">
+                                    <thead>
+                                        <tr>
+                                            <th>N° Pedido</th>
+                                            <th>Cliente</th>
+                                            <th>Total</th>
+                                            <th>Pago</th>
+                                            <th>Estado</th>
+                                            <th>Fecha</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyPedidosAdmin">
+                                        <tr>
+                                            <td colspan="7" class="text-center py-5 text-muted">
+                                                <span class="spinner-border spinner-border-sm me-2"></span>Cargando pedidos...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="pagination-admin">
+                                <span id="pedidosCount">—</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="admin-footer">
+            <span>Happy Flower &copy; 2026 — Panel de Administración</span>
+            <span>Desarrollado por estudiantes · Trujillo, Perú</span>
+        </footer>
+    </div>
+</div>
+
+<!-- MODAL DETALLE PEDIDO -->
+<div class="modal fade modal-admin" id="modalPedidoAdmin" tabindex="-1" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title"><i class="bi bi-bag-check me-2"></i>Detalle del pedido</h2>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="modalPedidoBody">
+                <p class="text-center py-4 text-muted"><span class="spinner-border spinner-border-sm me-2"></span>Cargando...</p>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex gap-2 flex-wrap align-items-center w-100">
+                    <label class="mb-0 fw-600" >Actualizar estado:</label>
+                    <select class="filter-select" id="nuevoEstadoPedido">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="preparacion">En preparación</option>
+                        <option value="listo">Listo</option>
+                        <option value="camino">En camino</option>
+                        <option value="entregado">Entregado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                    <input type="text" id="descripcionEstado" class="form-control"
+                        placeholder="Nota para el cliente (opcional)" />
+                    <button class="btn-admin-primary" id="btnActualizarEstado">
+                        <i class="bi bi-check2"></i> Actualizar
+                    </button>
+                    <button type="button" class="btn-admin-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div id="toastEstado" class="toast align-items-center text-white border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body fw-semibold" id="toastMensaje"></div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/public/js/admin_scr.js"></script>
+<script src="/public/js/pedidos_admin_scr.js"></script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+
+
+body {
+    background: #f9fafb
+}
+
+/*  TABS  */
+.order-tabs {
+    background: #fff;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    padding: .5rem;
+    display: flex;
+    gap: .4rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap
+}
+
+.order-tab {
+    background: none;
+    border: none;
+    padding: .6rem 1.2rem;
+    border-radius: 8px;
+    font-size: .88rem;
+    font-weight: 500;
+    color: var(--gris);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--trans), color var(--trans)
+}
+
+.order-tab.active {
+    background: var(--verde);
+    color: #fff
+}
+
+.mt-1{
+    color: #181212be;
+}
+.order-tab:hover:not(.active) {
+    background: rgba(45, 106, 79, .08);
+    color: var(--verde)
+}
+
+/*  ORDER CARDS  */
+.order-card {
+    background: #fff;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: box-shadow var(--trans)
+}
+
+.order-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .1)
+}
+
+.order-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .8rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, .07)
+}
+
+.order-id {
+    font-size: .75rem;
+    color: var(--gris);
+    margin-bottom: .2rem
+}
+
+.order-date {
+    font-size: .8rem;
+    color: var(--gris)
+}
+
+.order-status {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .35rem .9rem;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 600
+}
+
+.status-en-camino {
+    background: rgba(201, 168, 76, .15);
+    color: #a07a20
+}
+
+.status-entregado {
+    background: rgba(45, 106, 79, .12);
+    color: var(--verde)
+}
+
+.status-procesando {
+    background: rgba(82, 183, 136, .15);
+    color: #3a8a65
+}
+
+.status-cancelado {
+    background: rgba(224, 122, 143, .15);
+    color: #c05070
+}
+
+.status-pendiente {
+    background: rgba(150, 150, 150, .15);
+    color: #666
+}
+
+.status-preparacion {
+    background: rgba(100, 181, 246, .15);
+    color: #1a6fa0
+}
+
+.status-listo {
+    background: rgba(129, 199, 132, .15);
+    color: #2e7d32
+}
+
+.order-body {
+    padding: 1rem 0
+}
+
+.order-product {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: .8rem
+}
+
+.order-product:last-child {
+    margin-bottom: 0
+}
+
+.order-product-img {
+    width: 65px;
+    height: 65px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0
+}
+
+.order-product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease
+}
+
+.order-card:hover .order-product-img img {
+    transform: scale(1.06)
+}
+
+.order-product-name {
+    font-family: var(--ff-display);
+    font-size: 1rem;
+    font-weight: 600
+}
+
+.order-product-detail {
+    font-size: .8rem;
+    color: var(--gris)
+}
+
+.order-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .8rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, .07)
+}
+
+.order-total {
+    font-family: var(--ff-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--verde)
+}
+
+/*  TRACKING MODAL  */
+.track-steps {
+    position: relative;
+    padding-left: 1.8rem
+}
+
+.track-steps::before {
+    content: '';
+    position: absolute;
+    left: .55rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(0, 0, 0, .1)
+}
+
+.track-step {
+    position: relative;
+    margin-bottom: 1.5rem
+}
+
+.track-step:last-child {
+    margin-bottom: 0
+}
+
+.track-dot {
+    position: absolute;
+    left: -1.8rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ddd;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .55rem
+}
+
+.track-dot.done {
+    background: var(--verde);
+    box-shadow: 0 0 0 2px var(--verde)
+}
+
+.track-dot.current {
+    background: var(--rosa);
+    box-shadow: 0 0 0 2px var(--rosa);
+    animation: pulse 1.5s infinite
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 2px var(--rosa)
+    }
+
+    50% {
+        box-shadow: 0 0 0 5px rgba(224, 122, 143, .3)
+    }
+}
+
+.track-step-title {
+    font-weight: 600;
+    font-size: .9rem
+}
+
+.track-step-time {
+    font-size: .78rem;
+    color: var(--gris)
+}
+
+@media (max-width: 576px) {
+    .order-tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap
+    }
+}
