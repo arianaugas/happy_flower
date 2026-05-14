@@ -504,6 +504,21 @@ document.getElementById('filtroCategoria')?.addEventListener('change', function 
     cargarProductos(buscar, this.value);
 });
 
+// Auto-refresh del inventario cada 30 segundos
+let inventarioRefreshInterval = null;
+
+function iniciarAutoRefreshInventario() {
+  if (inventarioRefreshInterval) clearInterval(inventarioRefreshInterval);
+  inventarioRefreshInterval = setInterval(() => {
+    const modalAbierto = document.querySelector(".modal.show");
+    if (!modalAbierto) {
+      const buscar = document.getElementById("buscarProducto")?.value.trim() || "";
+      const cat = document.getElementById("filtroCategoria")?.value || "";
+      cargarProductos(buscar, cat);
+    }
+  }, 30000);
+}
+
 // inicializar el dom
 document.addEventListener('DOMContentLoaded', () => {
     // Preview al seleccionar archivo
@@ -533,4 +548,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     cargarCategorias().then(() => cargarProductos());
+
+    iniciarAutoRefreshInventario();
 });

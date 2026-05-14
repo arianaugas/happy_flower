@@ -223,6 +223,7 @@ window.abrirDetallePedido = async function (id) {
   }
 };
 
+
 document
   .getElementById("btnActualizarEstado")
   ?.addEventListener("click", async () => {
@@ -230,6 +231,11 @@ document
     const estado = document.getElementById("nuevoEstadoPedido")?.value;
     const descripcion =
       document.getElementById("descripcionEstado")?.value?.trim() || "";
+
+    if (!estado) {
+      alert("Selecciona un estado.");
+      return;
+    }
 
     const btn = document.getElementById("btnActualizarEstado");
     btn.disabled = true;
@@ -251,6 +257,19 @@ document
         )?.hide();
         await cargarPedidosAdmin();
         mostrarToastEstado(estado);
+
+        // Si se canceló, notificar visualmente que el stock fue repuesto
+        if (estado === "cancelado") {
+          setTimeout(() => {
+            const toastEl = document.getElementById("toastEstado");
+            const toastMsg = document.getElementById("toastMensaje");
+            if (toastEl && toastMsg) {
+              toastEl.className = "toast align-items-center border-0 bg-info text-dark";
+              toastMsg.textContent = "Stock repuesto automáticamente en el inventario.";
+              new bootstrap.Toast(toastEl, { delay: 4000 }).show();
+            }
+          }, 1000);
+        }
       } else {
         alert(data.mensaje || "Error al actualizar.");
       }
@@ -261,7 +280,7 @@ document
       btn.disabled = false;
       btn.innerHTML = '<i class="bi bi-check2 me-1"></i>Actualizar';
     }
-  });
+});
 
 
 function mostrarToastEstado(estado) {
@@ -321,6 +340,21 @@ document
   });
 
 
+
+// Auto-refresh de pedidos cada 45 segundos
+let pedidosRefreshInterval = null;
+
+function iniciarAutoRefreshPedidos() {
+  if (pedidosRefreshInterval) clearInterval(pedidosRefreshInterval);
+  pedidosRefreshInterval = setInterval(() => {
+    const modalAbierto = document.querySelector(".modal.show");
+    if (!modalAbierto) {
+      cargarPedidosAdmin();
+    }
+  }, 45000);
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   await cargarPedidosAdmin();
+  iniciarAutoRefreshPedidos();
 });

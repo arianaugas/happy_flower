@@ -25,20 +25,20 @@ function actualizarBadgeCarrito() {
 
 //  TOAST CAMBIO DE ESTADO PEDIDO 
 function mostrarToastEstadoPedido(numeroPedido, estado) {
-  const iconos = {
-    pendiente:   '⏳',
-    preparacion: '👨‍🍳',
-    listo:       '✅',
-    camino:      '🚚',
-    entregado:   '🎉',
-    cancelado:   '❌',
-  };
+    const iconos = {
+        pendiente: '⏳',
+        preparacion: '👨‍🍳',
+        listo: '✅',
+        camino: '🚚',
+        entregado: '🎉',
+        cancelado: '❌',
+    };
 
-  let toast = document.getElementById('toastEstadoPedido');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'toastEstadoPedido';
-    toast.style.cssText = `
+    let toast = document.getElementById('toastEstadoPedido');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toastEstadoPedido';
+        toast.style.cssText = `
       position:fixed;bottom:80px;right:20px;
       background:#1a1a2e;color:#fff;
       padding:14px 18px;border-radius:12px;
@@ -49,12 +49,12 @@ function mostrarToastEstadoPedido(numeroPedido, estado) {
       max-width:320px;line-height:1.5;
       cursor:pointer;
     `;
-    toast.onclick = () => { window.location.href = '/pedidos'; };
-    document.body.appendChild(toast);
-  }
+        toast.onclick = () => { window.location.href = '/pedidos'; };
+        document.body.appendChild(toast);
+    }
 
-  const icono = iconos[estado] || '📦';
-  toast.innerHTML = `
+    const icono = iconos[estado] || '📦';
+    toast.innerHTML = `
     <div style="font-size:.75rem;color:#aaa;margin-bottom:3px">Actualización de pedido</div>
     <div><strong>${icono} Se actualizó el estado de tu pedido</strong></div>
     <div style="font-size:.82rem;margin-top:4px;color:#ccc">
@@ -64,44 +64,44 @@ function mostrarToastEstadoPedido(numeroPedido, estado) {
     <div style="font-size:.72rem;color:#888;margin-top:5px">Toca para ver tus pedidos</div>
   `;
 
-  toast.style.opacity = '1';
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 6000);
+    toast.style.opacity = '1';
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 6000);
 }
 
 //  VERIFICAR CAMBIOS DE ESTADO EN PEDIDOS 
 async function verificarCambiosEstadoPedidos() {
-  try {
-    const res = await fetch('/api/auth/sesion');
-    const data = await res.json();
-    if (!data.ok || !data.usuario?.id_usuario) return; // solo usuarios logueados
+    try {
+        const res = await fetch('/api/auth/sesion');
+        const data = await res.json();
+        if (!data.ok || !data.usuario?.id_usuario) return; // solo usuarios logueados
 
-    const resP = await fetch('/api/pedidos/mis', { credentials: 'include' });
-    const dataP = await resP.json();
-    if (!dataP.ok || !dataP.pedidos?.length) return;
+        const resP = await fetch('/api/pedidos/mis', { credentials: 'include' });
+        const dataP = await resP.json();
+        if (!dataP.ok || !dataP.pedidos?.length) return;
 
-    const guardados = JSON.parse(localStorage.getItem('hf_estados_pedidos') || '{}');
-    const nuevosGuardados = { ...guardados };
-    let toastMostrado = false;
+        const guardados = JSON.parse(localStorage.getItem('hf_estados_pedidos') || '{}');
+        const nuevosGuardados = { ...guardados };
+        let toastMostrado = false;
 
-    dataP.pedidos.forEach((p) => {
-      const key    = String(p.id_pedido || p.numero_pedido);
-      const previo = guardados[key];
-      const actual = p.estado;
+        dataP.pedidos.forEach((p) => {
+            const key = String(p.id_pedido || p.numero_pedido);
+            const previo = guardados[key];
+            const actual = p.estado;
 
-      // Si existe registro previo Y cambió → notificar (solo 1 toast a la vez)
-      if (previo && previo !== actual && !toastMostrado) {
-        mostrarToastEstadoPedido(p.numero_pedido, actual);
-        toastMostrado = true;
-      }
+            // Si existe registro previo Y cambió → notificar (solo 1 toast a la vez)
+            if (previo && previo !== actual && !toastMostrado) {
+                mostrarToastEstadoPedido(p.numero_pedido, actual);
+                toastMostrado = true;
+            }
 
-      nuevosGuardados[key] = actual;
-    });
+            nuevosGuardados[key] = actual;
+        });
 
-    // Actualizar localStorage con estados frescos
-    localStorage.setItem('hf_estados_pedidos', JSON.stringify(nuevosGuardados));
+        // Actualizar localStorage con estados frescos
+        localStorage.setItem('hf_estados_pedidos', JSON.stringify(nuevosGuardados));
 
-  } catch (e) { /* sin sesión */  }
+    } catch (e) { /* sin sesión */ }
 }
 
 //  SIDEBAR 
@@ -221,7 +221,7 @@ async function mostrarSesionNav() {
         if (lastDivider) sidebar.insertBefore(divSesion, lastDivider);
         else sidebar.appendChild(divSesion);
 
-        document.getElementById('btnCerrarSesionSidebar')?.addEventListener('click', async () => {
+        /*document.getElementById('btnCerrarSesionSidebar')?.addEventListener('click', async () => {
             if (!confirm('¿Cerrar sesión?')) return;
             try {
                 await fetch('/api/auth/logout', { method: 'POST' });
@@ -234,6 +234,18 @@ async function mostrarSesionNav() {
             }
             // Limpiar pedidos locales de invitado (ya no aplican a este usuario)
             //localStorage.removeItem('pedidos_invitado');
+            sessionStorage.removeItem('_hf_uid');
+
+            window.location.href = '/login';
+        });*/
+
+        document.getElementById('btnCerrarSesionSidebar')?.addEventListener('click', async () => {
+            if (!confirm('¿Cerrar sesión?')) return;
+            try {
+                await fetch('/api/auth/logout', { method: 'POST' });
+            } catch (e) { }
+
+            // NO borrar el carrito del usuario — debe persistir al volver a iniciar sesión
             sessionStorage.removeItem('_hf_uid');
 
             window.location.href = '/login';

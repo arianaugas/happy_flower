@@ -47,7 +47,7 @@ function renderizarCarrito() {
                                 <i class="bi bi-plus"></i>
                             </button>
                         </div>
-                        <span class="fw-600" style="color:var(--verde,#2d6a4f)">S/ ${itemTotal.toFixed(2)}</span>
+                        <span class="fw-600" style="color:var(--GRIS_CLARO,#2d6a4f)">S/ ${itemTotal.toFixed(2)}</span>
                         <small class="text-muted">S/ ${item.precio.toFixed(2)} c/u</small>
                     </div>
                 </div>
@@ -210,7 +210,7 @@ function validarFormularioPago() {
         if (!correo) {
             marcarError('invCorreo', 'El correo es obligatorio.');
             valido = false;
-        } else if (!/^[^\s@]+@[^\s@]+\.(com|pe)$/.test(correo)) {
+        } else if (!/^[^\s@]+@[^\s@]+\.(com|pe|org|net|edu|gob|es|mx|co|io|info|biz|us|uk|cl|ar|bo|ec|ve|py|uy)$/i.test(correo)) {
             marcarError('invCorreo', 'Ingresa un correo válido con dominio .com o .pe (ej: nombre@gmail.com, nombre@empresa.pe).');
             valido = false;
         } else {
@@ -240,7 +240,7 @@ function abrirModalPago() {
         modal.innerHTML = `
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
-                    <div class="modal-header" style="background:var(--verde,#2d6a4f);color:#fff">
+                    <div class="modal-header" style="background:var(--GRIS_CLARO,#2d6a4f);color:#fff">
                         <h2 class="modal-title fs-5"><i class="bi bi-lock-fill me-2"></i>Finalizar pedido</h2>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
@@ -522,8 +522,8 @@ function mostrarExito(numeroPedido, idPedido) {
     const pedidosLocales = JSON.parse(localStorage.getItem('pedidos_invitado')) || [];
     pedidosLocales.unshift({
         numero_pedido: numeroPedido,
-        id_pedido:     idPedido,
-        fecha:         new Date().toISOString()
+        id_pedido: idPedido,
+        fecha: new Date().toISOString()
     });
     localStorage.setItem('pedidos_invitado', JSON.stringify(pedidosLocales));
 
@@ -534,14 +534,255 @@ function mostrarExito(numeroPedido, idPedido) {
             <div class="display-1 mb-3">🌸</div>
             <h2 class="fw-600 mb-2" style="color:var(--verde,#2d6a4f)">¡Pedido confirmado!</h2>
             <p class="text-muted mb-1">Tu número de pedido es:</p>
-            <p class="fs-4 fw-600 mb-4">${numeroPedido}</p>
+            <p class="fs-4 fw-600 mb-2">${numeroPedido}</p>
             <p class="text-muted mb-4">Nos pondremos en contacto contigo pronto para coordinar la entrega.</p>
-            <div class="d-flex gap-3 justify-content-center flex-wrap">
-                <a href="/pedidos" class="btn btn-success rounded-pill px-4">Ver mis pedidos</a>
-                <a href="/catalogo" class="btn btn-outline-success rounded-pill px-4">Seguir comprando</a>
+            <div class="d-flex gap-3 justify-content-center flex-wrap mb-3">
+                <button id="btnDescargarBoleta" class="btn btn-success rounded-pill px-4">
+                    <i class="bi bi-file-earmark-pdf me-2"></i>Descargar boleta
+                </button>
+                <a href="/pedidos" class="btn btn-outline-success rounded-pill px-4">Ver mis pedidos</a>
+                <a href="/catalogo" class="btn btn-outline-secondary rounded-pill px-4">Seguir comprando</a>
             </div>
+            <p class="text-muted small">Puedes descargar tu boleta ahora o encontrarla más tarde en "Mis pedidos".</p>
         </div>`;
+
+    document.getElementById('btnDescargarBoleta')?.addEventListener('click', async () => {
+        const btn = document.getElementById('btnDescargarBoleta');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generando...';
+
+        try {
+            const res = await fetch(`/api/pedidos/${idPedido}`, { credentials: 'include' });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.mensaje);
+            generarBoletaPDF(data.pedido, data.items, numeroPedido);
+        } catch (e) {
+            alert('Error al generar la boleta. Intenta desde "Mis pedidos".');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-file-earmark-pdf me-2"></i>Descargar boleta';
+        }
+    });
 }
+
+function generarBoletaPDF(pedido, items, numeroPedido) {
+    const { jsPDF } = window.jspdf;
+    
+    const doc = new jsPDF({
+        unit: 'mm',
+        format: 'a4',
+        putOnlyUsedFonts: true
+    });
+
+    const NEGRO = [30, 30, 30];
+    const GRIS = [100, 100, 100];
+    const GRIS_CLARO = [210, 210, 210];
+    const GRIS_FONDO = [245, 245, 245];
+    const BLANCO = [255, 255, 255];
+    const AZUL_ACCENTO = [80, 120, 190]; 
+
+    const ancho = 210;
+    const alto = 297;
+    const margenX = 15;
+    const anchoUtil = ancho - margenX * 2;
+    
+    let y = 0;
+
+    function dibujarHeader(doc) {
+        doc.setFillColor(...GRIS_FONDO);
+        doc.rect(0, 0, ancho, 38, 'F');
+        
+        doc.setTextColor(...NEGRO);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(22);
+        doc.text('Happy Flower', margenX, 15);
+        
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setTextColor(...GRIS);
+        doc.text('Arreglos florales — Trujillo, Perú', margenX, 21);
+        doc.text('WhatsApp: +51 927 861 327', margenX, 26);
+        doc.text('RUC: 10XXXXXXXXX', margenX, 31); // Añadir RUC real
+
+        // Titulo Boleta
+        doc.setTextColor(...NEGRO);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.text('BOLETA DE VENTA', ancho - margenX, 15, { align: 'right' });
+        
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.text(`N° ${String(numeroPedido).padStart(6, '0')}`, ancho - margenX, 22, { align: 'right' });
+        
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8.5);
+        const fechaEmision = new Date().toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        doc.text(`Emitida: ${fechaEmision}`, ancho - margenX, 27, { align: 'right' });
+    }
+
+    function dibujarPie(doc) {
+        const pieY = alto - 15;
+        doc.setDrawColor(...GRIS_CLARO);
+        doc.setLineWidth(0.3);
+        doc.line(margenX, pieY - 5, ancho - margenX, pieY - 5);
+        doc.setTextColor(...GRIS);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.text('Gracias por tu compra en Happy Flower — Este documento es un comprobante de tu pedido.', ancho / 2, pieY, { align: 'center' });
+        doc.text('Consultas: WhatsApp +51 927 861 327 | Trujillo, Perú', ancho / 2, pieY + 4, { align: 'center' });
+    }
+
+    dibujarHeader(doc);
+    y = 45;
+
+    const mitad = (anchoUtil - 5) / 2;
+    
+    // Fondo de cajas
+    doc.setFillColor(...GRIS_FONDO);
+    doc.setDrawColor(...GRIS_CLARO);
+    doc.setLineWidth(0.1);
+    doc.roundedRect(margenX, y, anchoUtil, 36, 1, 1, 'FD');
+
+    // Datos Cliente
+    doc.setTextColor(...NEGRO);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.text('DATOS DEL CLIENTE', margenX + 4, y + 7);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...GRIS);
+    const nombreCliente = (pedido.nombre_usuario || pedido.nombre_invitado || 'Cliente').substring(0, 40);
+    const correoCliente = (pedido.correo_usuario || pedido.correo_invitado || '—').substring(0, 40);
+    const telCliente = pedido.telefono_usuario || pedido.telefono_invitado || '—';
+
+    doc.text(`Nombre:`, margenX + 4, y + 15);
+    doc.text(`Correo:`, margenX + 4, y + 21);
+    doc.text(`Teléfono:`, margenX + 4, y + 27);
+    
+    doc.setTextColor(...NEGRO);
+    doc.text(nombreCliente, margenX + 22, y + 15);
+    doc.text(correoCliente, margenX + 22, y + 21);
+    doc.text(String(telCliente), margenX + 22, y + 27);
+
+    // Datos Pedido
+    doc.setTextColor(...NEGRO);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.text('DATOS DEL PEDIDO', margenX + mitad + 10, y + 7);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...GRIS);
+    const fechaPedido = pedido.creado_en ? new Date(pedido.creado_en).toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric' }) : '—';
+    const direccion = (pedido.direccion_entrega || '—').substring(0, 45);
+
+    doc.text(`Fecha:`, margenX + mitad + 10, y + 15);
+    doc.text(`Pago:`, margenX + mitad + 10, y + 21);
+    doc.text(`Dirección:`, margenX + mitad + 10, y + 27);
+    
+    doc.setTextColor(...NEGRO);
+    doc.text(fechaPedido, margenX + mitad + 28, y + 15);
+    doc.text((pedido.metodo_pago || '—').toUpperCase(), margenX + mitad + 28, y + 21);
+    doc.text(direccion, margenX + mitad + 28, y + 27);
+
+    y += 45;
+
+    //TABLA HEADER 
+    doc.setFillColor(...NEGRO);
+    doc.rect(margenX, y, anchoUtil, 8, 'F');
+    doc.setTextColor(...BLANCO);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8.5);
+    doc.text('DESCRIPCIÓN', margenX + 4, y + 5.5);
+    doc.text('CANT.', margenX + 115, y + 5.5, { align: 'center' });
+    doc.text('P. UNIT.', margenX + 140, y + 5.5, { align: 'center' });
+    doc.text('SUBTOTAL', margenX + anchoUtil - 4, y + 5.5, { align: 'right' });
+    y += 8;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...NEGRO);
+    let filaH = 9;
+
+    items.forEach((item, idx) => {
+        // Verificar espacio para nueva página
+        if (y > 250) {
+            dibujarPie(doc);
+            doc.addPage();
+            dibujarHeader(doc);
+            y = 45;
+            // Redibujar tabla header en nueva página
+            doc.setFillColor(...NEGRO);
+            doc.rect(margenX, y, anchoUtil, 8, 'F');
+            doc.setTextColor(...BLANCO);
+            doc.setFont('helvetica', 'bold');
+            doc.text('DESCRIPCIÓN', margenX + 4, y + 5.5);
+            doc.text('CANT.', margenX + 115, y + 5.5, { align: 'center' });
+            doc.text('P. UNIT.', margenX + 140, y + 5.5, { align: 'center' });
+            doc.text('SUBTOTAL', margenX + anchoUtil - 4, y + 5.5, { align: 'right' });
+            y += 8;
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(...NEGRO);
+        }
+
+        // Fondo alternado
+        if (idx % 2 === 0) {
+            doc.setFillColor(250, 250, 250);
+            doc.rect(margenX, y, anchoUtil, filaH, 'F');
+        }
+        
+        doc.setDrawColor(...GRIS_CLARO);
+        doc.setLineWidth(0.1);
+        doc.line(margenX, y + filaH, margenX + anchoUtil, y + filaH);
+        
+        let nombreProd = (item.nombre || '').substring(0, 60);
+        
+        doc.setFontSize(8.5);
+        doc.text(nombreProd, margenX + 4, y + 6);
+        doc.text(String(item.cantidad), margenX + 115, y + 6, { align: 'center' });
+        doc.text(`S/ ${Number(item.precio_unit || 0).toFixed(2)}`, margenX + 140, y + 6, { align: 'center' });
+        doc.text(`S/ ${Number(item.subtotal || (item.precio_unit * item.cantidad)).toFixed(2)}`, margenX + anchoUtil - 4, y + 6, { align: 'right' });
+        
+        y += filaH;
+    });
+
+    y += 10;
+    
+    // Verificar espacio para totales
+    if (y > 230) {
+        dibujarPie(doc);
+        doc.addPage();
+        y = 30;
+    }
+
+    doc.setFillColor(...GRIS_FONDO);
+    doc.rect(ancho - margenX - 65, y, 65, 12, 'F');
+    
+    doc.setTextColor(...NEGRO);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text('TOTAL A PAGAR:', ancho - margenX - 55, y + 7.5);
+    doc.text(`S/ ${Number(pedido.total || 0).toFixed(2)}`, ancho - margenX - 4, y + 7.5, { align: 'right' });
+
+
+    if (pedido.numero_voucher) {
+        y += 18;
+        doc.setFillColor(240, 240, 240);
+        doc.roundedRect(margenX, y, anchoUtil, 10, 1, 1, 'FD');
+        doc.setTextColor(...GRIS);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8.5);
+        doc.text('Código de aprobación (voucher):', margenX + 4, y + 6.5);
+        doc.setTextColor(...NEGRO);
+        doc.setFont('helvetica', 'bold');
+        doc.text(String(pedido.numero_voucher), margenX + 55, y + 6.5);
+    }
+
+    dibujarPie(doc);
+
+    doc.save(`Boleta_${String(numeroPedido).padStart(6, '0')}.pdf`);
+}
+
 
 // inicializar el dom
 document.addEventListener('DOMContentLoaded', () => {

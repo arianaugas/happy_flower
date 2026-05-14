@@ -188,6 +188,7 @@ async function detalle(req, res) {
     }
 }
 
+
 async function actualizarEstado(req, res) {
     const { id } = req.params;
     const idNum = parseInt(id, 10);
@@ -210,22 +211,69 @@ async function actualizarEstado(req, res) {
     const descFinal = descripcion?.trim() || MENSAJES_DEFAULT[estado] || null;
 
     try {
-        await query(
-            'UPDATE pedidos SET estado = ?, actualizado_en = NOW() WHERE id_pedido = ?',
-            [estado, idNum]
+        // Obtener estado actual del pedido
+        const rows = await query('SELECT estado FROM pedidos WHERE id_pedido = ?', [idNum]);
+        if (!rows.length) return res.status(404).json({ ok: false, mensaje: 'Pedido no encontrado.' });
+        const estadoActual = rows[0].estado;
+
+        // Bloquear cancelación si ya está en camino o entregado
+        const noCancelables = ['camino', 'entregado'];
+        if (estado === 'cancelado' && noCancelables.includes(estadoActual)) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: `No se puede cancelar un pedido que ya está en "${estadoActual}".`
+            });
+        }
+
+        // Obtener items del pedido para ajustar stock
+        const items = await query(
+            'SELECT id_producto, cantidad FROM detalle_pedidos WHERE id_pedido = ?',
+            [idNum]
         );
 
-        await query(
-            'INSERT INTO historial_pedidos (id_pedido, estado, descripcion, registrado_por) VALUES (?, ?, ?, ?)',
-            [idNum, estado, descFinal, id_admin]
-        );
+        await withTransaction(async (conn) => {
+            // Si se cancela (y no estaba cancelado NI entregado) → devolver stock
+            if (estado === 'cancelado' && estadoActual !== 'cancelado' && estadoActual !== 'entregado') {
+                for (const item of items) {
+                    await queryT(conn,
+                        'UPDATE productos SET stock = stock + ? WHERE id_producto = ?',
+                        [item.cantidad, item.id_producto]
+                    );
+                }
+            }
+
+            // Si se reactiva (estaba cancelado y pasa a otro estado) → descontar stock
+            if (estadoActual === 'cancelado' && estado !== 'cancelado') {
+                for (const item of items) {
+                    const resStock = await queryT(conn,
+                        'UPDATE productos SET stock = stock - ? WHERE id_producto = ? AND stock >= ?',
+                        [item.cantidad, item.id_producto, item.cantidad]
+                    );
+                    if (resStock.affectedRows === 0) {
+                        throw new Error(`Stock insuficiente para producto ID ${item.id_producto}.`);
+                    }
+                }
+            }
+
+            await queryT(conn,
+                'UPDATE pedidos SET estado = ?, actualizado_en = NOW() WHERE id_pedido = ?',
+                [estado, idNum]
+            );
+
+            await queryT(conn,
+                'INSERT INTO historial_pedidos (id_pedido, estado, descripcion, registrado_por) VALUES (?, ?, ?, ?)',
+                [idNum, estado, descFinal, id_admin]
+            );
+        });
 
         return res.json({ ok: true, mensaje: `Estado actualizado a "${estado}".` });
+
     } catch (err) {
         console.error('Error actualizar estado:', err.message);
-        return res.status(500).json({ ok: false, mensaje: 'Error al actualizar estado.' });
+        return res.status(500).json({ ok: false, mensaje: err.message || 'Error al actualizar estado.' });
     }
 }
+
 
 async function listarTodos(req, res) {
     const { estado, desde, hasta } = req.query;

@@ -44,7 +44,7 @@ document.getElementById('btnIrLogin')?.addEventListener('click', () => {
     document.getElementById('panelLogin').classList.remove('d-none');
 });
 
-// SELECTOR ROL (visual solamente)
+// SELECTOR ROL 
 document.querySelectorAll('.role-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.role-btn').forEach(b => {
@@ -56,14 +56,36 @@ document.querySelectorAll('.role-btn').forEach(btn => {
     });
 });
 
-// LOGIN 
+//REGEX COMPARTIDAS
+const emailRegex = /^[^\s@]+@[^\s@]+\.(com|pe|org|net|edu|gob|es|mx|co|io|info|biz|us|uk|cl|ar|bo|ec|ve|py|uy)$/i;
+const soloLetrasRegex = /^[a-záéíóúüñA-ZÁÉÍÓÚÜÑ\s'-]+$/;
+const telefonoRegex = /^9\d{8}$/;
+
+// LOGIN
 document.getElementById('btnLogin')?.addEventListener('click', async () => {
-    const correo = document.getElementById('loginCorreo').value.trim();
+    const correo     = document.getElementById('loginCorreo').value.trim();
     const contrasena = document.getElementById('loginContrasena').value;
     ocultarAlerta('loginAlert');
 
-    if (!correo || !contrasena) {
+    // Validar vacíos
+    if (!correo && !contrasena) {
         mostrarAlerta('loginAlert', 'Completa todos los campos.');
+        return;
+    }
+    if (!correo) {
+        mostrarAlerta('loginAlert', 'El correo es obligatorio.');
+        return;
+    }
+    if (!emailRegex.test(correo)) {
+        mostrarAlerta('loginAlert', 'Ingresa un correo válido (ej: nombre@gmail.com).');
+        return;
+    }
+    if (!contrasena) {
+        mostrarAlerta('loginAlert', 'La contraseña es obligatoria.');
+        return;
+    }
+    if (contrasena.length < 4) {
+        mostrarAlerta('loginAlert', 'La contraseña debe tener al menos 4 caracteres.');
         return;
     }
 
@@ -77,20 +99,16 @@ document.getElementById('btnLogin')?.addEventListener('click', async () => {
         const data = await res.json();
 
         if (data.ok) {
-             // Limpiar datos del invitado al iniciar sesión con cuenta real
             localStorage.removeItem('pedidos_invitado');
             localStorage.removeItem('carrito_flores:guest');
-
-            // Redirigir según rol
             if (data.rol === 'admin') {
                 window.location.href = '/admin';
             } else {
                 window.location.href = '/';
             }
         } else {
-            mostrarAlerta('loginAlert', data.mensaje || 'Error al iniciar sesión.');
+            mostrarAlerta('loginAlert', data.mensaje || 'Correo o contraseña incorrectos.');
         }
-
     } catch (e) {
         mostrarAlerta('loginAlert', 'Error de conexión. Intenta nuevamente.');
     } finally {
@@ -105,41 +123,68 @@ document.getElementById('btnLogin')?.addEventListener('click', async () => {
     });
 });
 
-//  REGISTRO 
+// REGISTRO
 document.getElementById('btnRegistro')?.addEventListener('click', async () => {
-    const nombre = document.getElementById('regNombre').value.trim();
-    const apellido = document.getElementById('regApellido').value.trim();
-    const correo = document.getElementById('regCorreo').value.trim();
-    const telefono = document.getElementById('regTelefono').value.trim();
+    const nombre     = document.getElementById('regNombre').value.trim();
+    const apellido   = document.getElementById('regApellido').value.trim();
+    const correo     = document.getElementById('regCorreo').value.trim();
+    const telefono   = document.getElementById('regTelefono').value.trim();
     const contrasena = document.getElementById('regContrasena').value;
     ocultarAlerta('registroAlert');
 
-    if (!nombre || !correo || !contrasena) {
-        mostrarAlerta('registroAlert', 'Nombre, correo y contraseña son obligatorios.');
+    // Nombre
+    if (!nombre) {
+        mostrarAlerta('registroAlert', 'El nombre es obligatorio.');
         return;
     }
-    const soloLetrasRegex = /^[a-záéíóúüñA-ZÁÉÍÓÚÜÑ\s'-]+$/;
     if (!soloLetrasRegex.test(nombre)) {
-        mostrarAlerta('registroAlert', 'El nombre no puede contener letras.');
+        mostrarAlerta('registroAlert', 'El nombre solo puede contener letras, no números ni símbolos.');
         return;
     }
-    if (apellido && !soloLetrasRegex.test(apellido)) {
-        mostrarAlerta('registroAlert', 'El apellido no puede contener letras.');
+    if (nombre.length < 2) {
+        mostrarAlerta('registroAlert', 'El nombre debe tener al menos 2 caracteres.');
         return;
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(correo)) {
-        mostrarAlerta('registroAlert', 'Ingresa un correo válido.');
-        return;
-    }
-    if (telefono) { 
-        const telefonoRegex = /^9\d{8}$/;
-        if (!telefonoRegex.test(telefono)) {
-            mostrarAlerta('registroAlert', 'El teléfono debe ser valido');
+
+    // Apellido (opcional pero si se llena, se valida)
+    if (apellido) {
+        if (!soloLetrasRegex.test(apellido)) {
+            mostrarAlerta('registroAlert', 'El apellido solo puede contener letras, no números ni símbolos.');
+            return;
+        }
+        if (apellido.length < 2) {
+            mostrarAlerta('registroAlert', 'El apellido debe tener al menos 2 caracteres.');
             return;
         }
     }
 
+    // Correo
+    if (!correo) {
+        mostrarAlerta('registroAlert', 'El correo es obligatorio.');
+        return;
+    }
+    if (!emailRegex.test(correo)) {
+        mostrarAlerta('registroAlert', 'Ingresa un correo válido (ej: nombre@gmail.com).');
+        return;
+    }
+
+    // Teléfono (opcional pero si se llena, se valida)
+    if (telefono) {
+        if (!/^\d+$/.test(telefono)) {
+            mostrarAlerta('registroAlert', 'El teléfono solo debe contener números.');
+            return;
+        }
+        if (!telefonoRegex.test(telefono)) {
+            mostrarAlerta('registroAlert', 'El teléfono debe empezar con 9 y tener 9 dígitos (ej: 987654321).');
+            return;
+        }
+    }
+
+    // Contraseña
+    if (!contrasena) {
+        mostrarAlerta('registroAlert', 'La contraseña es obligatoria.');
+        return;
+    }
     if (contrasena.length < 6) {
         mostrarAlerta('registroAlert', 'La contraseña debe tener al menos 6 caracteres.');
         return;
