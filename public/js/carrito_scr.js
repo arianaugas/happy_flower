@@ -69,25 +69,55 @@ function actualizarTotales(subtotal) {
 }
 
 
+//  MODAL ELIMINAR 
+let _modalProductoPendiente = null;
+
+function abrirModalEliminar(id_producto) {
+    _modalProductoPendiente = id_producto;
+    const overlay = document.getElementById('modalEliminarOverlay');
+    if (overlay) overlay.classList.add('activo');
+    document.getElementById('modalEliminarClose')?.focus();
+    document.body.style.overflow = 'hidden';
+}
+
+function cerrarModalEliminar() {
+    const overlay = document.getElementById('modalEliminarOverlay');
+    if (overlay) overlay.classList.remove('activo');
+    _modalProductoPendiente = null;
+    document.body.style.overflow = '';
+}
+
+function confirmarEliminarProducto() {
+    if (_modalProductoPendiente === null) return;
+    const carrito = getCarrito();
+    const idx = carrito.findIndex(i => i.id_producto === _modalProductoPendiente);
+    if (idx !== -1) {
+        carrito.splice(idx, 1);
+        setCarrito(carrito);
+        renderizarCarrito();
+        actualizarBadgesCarrito();
+    }
+    cerrarModalEliminar();
+}
+
+
 window.cambiarCantidad = function (id_producto, delta) {
     const carrito = getCarrito();
     const idx = carrito.findIndex(i => i.id_producto === id_producto);
     if (idx === -1) return;
-    carrito[idx].cantidad += delta;
-    if (carrito[idx].cantidad <= 0) carrito.splice(idx, 1);
+    const nuevaCantidad = carrito[idx].cantidad + delta;
+    if (nuevaCantidad <= 0) {
+        abrirModalEliminar(id_producto);
+        return;
+    }
+    carrito[idx].cantidad = nuevaCantidad;
     setCarrito(carrito);
     renderizarCarrito();
     actualizarBadgesCarrito();
 };
 
 window.eliminarDelCarrito = function (id_producto) {
-    const carrito = getCarrito();
-    const idx = carrito.findIndex(i => i.id_producto === id_producto);
-    if (idx === -1) return;
-    carrito.splice(idx, 1);
-    setCarrito(carrito);
-    renderizarCarrito();
-    actualizarBadgesCarrito();
+    abrirModalEliminar(id_producto);
 };
 
 function actualizarBadgesCarrito() {
@@ -791,4 +821,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('.btn-checkout')?.addEventListener('click', abrirModalPago);
     document.getElementById('btnPago')?.addEventListener('click', abrirModalPago);
+
+    // Listeners del modal eliminar
+    document.getElementById('modalEliminarClose')?.addEventListener('click', cerrarModalEliminar);
+    document.getElementById('modalEliminarConfirmar')?.addEventListener('click', confirmarEliminarProducto);
+    document.getElementById('modalEliminarGuardar')?.addEventListener('click', cerrarModalEliminar);
+
+    // Cerrar al hacer click fuera del modal
+    document.getElementById('modalEliminarOverlay')?.addEventListener('click', function(e) {
+        if (e.target === this) cerrarModalEliminar();
+    });
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') cerrarModalEliminar();
+    });
 });

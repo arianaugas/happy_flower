@@ -69,11 +69,13 @@ body {
     .step-label {
         font-size: .65rem
     }
+
     .step-circle {
         width: 28px;
         height: 28px;
         font-size: .72rem
     }
+
     .step-line {
         min-width: 8px;
         margin-top: 13px
@@ -96,7 +98,7 @@ body {
     border-radius: 8px;
     font-size: .88rem;
     font-weight: 500;
-    transition:  var(--trans), color var(--trans)
+    transition: var(--trans), color var(--trans)
 }
 
 .btn-continue:hover {
@@ -194,4 +196,160 @@ body {
         position: static;
         margin-top: 1rem
     }
+}
+
+/* ── MODAL ELIMINAR PRODUCTO ── */
+.modal-eliminar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    z-index: 1080;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+    backdrop-filter: blur(2px)
+}
+
+@media (min-width: 576px) {
+    .modal-eliminar-overlay {
+        align-items: center;
+        padding: 1rem
+    }
+}
+
+.modal-eliminar-overlay.activo {
+    display: flex;
+    animation: overlayIn .2s ease
+}
+
+@keyframes overlayIn {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+.modal-eliminar-box {
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    padding: 2rem 1.5rem 2.2rem;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    animation: slideUp .28s cubic-bezier(.32, 1.2, .54, 1) both;
+    text-align: center
+}
+
+@media (min-width: 576px) {
+    .modal-eliminar-box {
+        border-radius: 18px;
+        max-width: 400px;
+        padding: 2.2rem 2rem 2rem;
+        animation: popIn .25s cubic-bezier(.32, 1.2, .54, 1) both
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%)
+    }
+
+    to {
+        transform: translateY(0)
+    }
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(.9);
+        opacity: 0
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1
+    }
+}
+
+.modal-eliminar-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: #999;
+    cursor: pointer;
+    line-height: 1;
+    padding: .25rem;
+    transition: color .15s
+}
+
+.modal-eliminar-close:hover {
+    color: #333
+}
+
+.modal-eliminar-icon {
+    font-size: 2rem;
+    color: #e8a000;
+    margin-bottom: .6rem
+}
+
+.modal-eliminar-titulo {
+    font-family: var(--ff-display, inherit);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: .6rem
+}
+
+.modal-eliminar-desc {
+    font-size: .92rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 0
+}
+
+.modal-eliminar-acciones {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 1.4rem;
+    border-top: 1px solid #ebebeb
+}
+
+.modal-eliminar-btn {
+    background: none;
+    border: none;
+    width: 100%;
+    padding: .95rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: .15s, color .15s;
+    border-bottom: 1px solid #ebebeb
+}
+
+.modal-eliminar-btn:last-child {
+    border-bottom: none
+}
+
+.modal-eliminar-btn--guardar {
+    color: #2d6a4f
+}
+
+.modal-eliminar-btn--guardar:hover {
+    background: rgba(45, 106, 79, .07)
+}
+
+.modal-eliminar-btn--eliminar {
+    color: #c0392b
+}
+
+.modal-eliminar-btn--eliminar:hover {
+    background: rgba(192, 57, 43, .07)
 }
