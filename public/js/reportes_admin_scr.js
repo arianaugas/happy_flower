@@ -1,7 +1,7 @@
 'use strict';
 
 function fechaLocal(d) {
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 const BARS = ['bar-verde', 'bar-rosa', 'bar-azul', 'bar-dorado', 'bar-indigo', 'bar-teal', 'bar-amber', 'bar-cyan', 'bar-lime', 'bar-violet'];
@@ -179,7 +179,11 @@ async function cargarVentasPeriodo() {
             tbody.innerHTML = ventas.map(v => {
                 const ingresos = Number(v.ingresos);
                 const barPct = maxIngresos ? Math.round((ingresos / maxIngresos) * 100) : 0;
-                const fecha = new Date(v.fecha + 'T12:00:00').toLocaleDateString('es-PE', { weekday: 'short', day: '2-digit', month: 'short' });
+                const fechaStr = v.fecha instanceof Date
+                    ? `${v.fecha.getFullYear()}-${String(v.fecha.getMonth() + 1).padStart(2, '0')}-${String(v.fecha.getDate()).padStart(2, '0')}`
+                    : v.fecha;
+                const fecha = new Date(fechaStr + 'T12:00:00').toLocaleDateString('es-PE', { weekday: 'short', day: '2-digit', month: 'short' })
+
                 return `<tr>
         <td data-label="Fecha"><strong>${fecha}</strong></td>
         <td data-label="Pedidos">${v.total_pedidos}</td>

@@ -37,26 +37,27 @@ async function pedidosRecientes(req, res) {
 async function ventasPorPeriodo(req, res) {
     const { desde, hasta } = req.query;
 
+    const fechaLocal = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     const fechaDesde = desde ? `${desde} 00:00:00` : (() => {
-        const d = new Date(); d.setDate(d.getDate()-30); d.setHours(0,0,0,0);
-        return d.toISOString().slice(0,19).replace('T',' ');
+        const d = new Date(); d.setDate(d.getDate() - 30);
+        return `${fechaLocal(d)} 00:00:00`;
     })();
     const fechaHasta = hasta ? `${hasta} 23:59:59` : (() => {
-        const d = new Date(); d.setHours(23,59,59,999);
-        return d.toISOString().slice(0,19).replace('T',' ');
+        const d = new Date();
+        return `${fechaLocal(d)} 23:59:59`;
     })();
 
     try {
         const ventas = await query(`
             SELECT
-                DATE(creado_en) AS fecha,
+                DATE_FORMAT(creado_en - INTERVAL 5 HOUR, '%Y-%m-%d') AS fecha,
                 COUNT(*) AS total_pedidos,
                 IFNULL(SUM(CASE WHEN estado != 'cancelado' THEN total ELSE 0 END), 0) AS ingresos,
                 COUNT(CASE WHEN estado = 'entregado' THEN 1 END) AS entregados,
                 COUNT(CASE WHEN estado = 'cancelado' THEN 1 END) AS cancelados
             FROM pedidos
             WHERE creado_en >= ? AND creado_en <= ?
-            GROUP BY DATE(creado_en)
+            GROUP BY DATE_FORMAT(creado_en - INTERVAL 5 HOUR, '%Y-%m-%d')
             ORDER BY fecha DESC
         `, [fechaDesde, fechaHasta]);
 
@@ -77,20 +78,20 @@ async function ventasPorPeriodo(req, res) {
 
         const t = totRow[0];
         const ingresos = parseFloat(t.ingresos_totales) || 0;
-        const inversion = parseFloat(t.inversion_total)  || 0;
-        const gananciaDB= parseFloat(t.ganancia_total)   || 0;
-        const ganancia  = gananciaDB > 0 ? gananciaDB : ingresos - inversion;
+        const inversion = parseFloat(t.inversion_total) || 0;
+        const gananciaDB = parseFloat(t.ganancia_total) || 0;
+        const ganancia = gananciaDB > 0 ? gananciaDB : ingresos - inversion;
 
         return res.json({
             ok: true,
             ventas,
             totales: {
-                total_pedidos:    t.total_pedidos,
-                entregados:       t.entregados,
-                cancelados:       t.cancelados,
+                total_pedidos: t.total_pedidos,
+                entregados: t.entregados,
+                cancelados: t.cancelados,
                 ingresos_totales: ingresos.toFixed(2),
-                inversion_total:  inversion.toFixed(2),
-                ganancia_total:   ganancia.toFixed(2),
+                inversion_total: inversion.toFixed(2),
+                ganancia_total: ganancia.toFixed(2),
             }
         });
     } catch (err) {

@@ -238,8 +238,8 @@ async function listarTodos(req, res) {
              WHERE 1=1`;
 
     if (estado) { q += ' AND p.estado = ?'; params.push(estado); }
-    if (desde) { q += ' AND p.creado_en >= ?'; params.push(`${desde} 00:00:00`); }
-    if (hasta) { q += ' AND p.creado_en <= ?'; params.push(`${hasta} 23:59:59`); }
+    if (desde) { q += ' AND (p.creado_en - INTERVAL 5 HOUR) >= ?'; params.push(`${desde} 00:00:00`); }
+    if (hasta) { q += ' AND (p.creado_en - INTERVAL 5 HOUR) <= ?'; params.push(`${hasta} 23:59:59`); }
 
     q += ' ORDER BY p.creado_en DESC';
 
