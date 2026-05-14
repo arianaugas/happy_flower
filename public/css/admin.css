@@ -596,6 +596,13 @@ h5 {
     transform: translateY(-2px)
 }
 
+.stat-card>div:last-child {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+}
+
+
 .stat-icon {
     width: 52px;
     height: 52px;
@@ -642,15 +649,18 @@ h5 {
     white-space: nowrap;
 }
 
+
 .stat-value {
     font-family: var(--ff-display);
-    font-size: 1.75rem;
+    font-size: clamp(1.1rem, 2vw, 1.75rem);
     font-weight: 700;
     color: var(--oscuro);
-    line-height: 1;
+    line-height: 1.1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .stat-sub {
@@ -1834,7 +1844,7 @@ h5 {
     }
 
     .stat-value {
-        font-size: 1.3rem
+        font-size: clamp(.95rem, 3.5vw, 1.3rem)
     }
 
     .stat-label {
@@ -2088,5 +2098,15 @@ h5 {
 
     .table-admin tfoot td[colspan] {
         display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    [data-rango] {
+        flex: 1;
+        min-width: 0;
+        font-size: .69rem;
+        padding: .4rem .5rem;
+        text-align: center;
     }
 }

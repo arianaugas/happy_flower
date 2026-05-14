@@ -210,8 +210,8 @@ function validarFormularioPago() {
         if (!correo) {
             marcarError('invCorreo', 'El correo es obligatorio.');
             valido = false;
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-            marcarError('invCorreo', 'Ingresa un correo válido que contenga @.com (ej: nombre@gmail.com).');
+        } else if (!/^[^\s@]+@[^\s@]+\.(com|pe)$/.test(correo)) {
+            marcarError('invCorreo', 'Ingresa un correo válido con dominio .com o .pe (ej: nombre@gmail.com, nombre@empresa.pe).');
             valido = false;
         } else {
             limpiarError('invCorreo');

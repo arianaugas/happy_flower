@@ -1,6 +1,11 @@
 'use strict';
 
+function fechaLocal(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
 const BARS = ['bar-verde', 'bar-rosa', 'bar-azul', 'bar-dorado', 'bar-indigo', 'bar-teal', 'bar-amber', 'bar-cyan', 'bar-lime', 'bar-violet'];
+
 //  TABS 
 document.querySelectorAll('.admin-tab').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -75,11 +80,9 @@ async function cargarTopProductos() {
         document.getElementById('statIngresos').textContent = `S/ ${totalIngresos.toFixed(2)}`;
         document.getElementById('statPedidosTop').textContent = totalPedidos;
 
-        // ← corregido: era <div ${rankClass(i)}">, le faltaba class=
         const rankClass = (i) => i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-n';
 
         if (tbody) {
-
             tbody.innerHTML = prods.map((p, i) => {
                 const unidades = Number(p.unidades_vendidas);
                 const barPct = maxUnidades ? Math.round((unidades / maxUnidades) * 100) : 0;
@@ -115,14 +118,17 @@ let rangoActivoDias = 30;
 
 document.querySelectorAll('[data-rango]').forEach(btn => {
     btn.addEventListener('click', () => {
-        document.querySelectorAll('[data-rango]').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        document.querySelectorAll('[data-rango]').forEach(b => {
+            b.classList.remove('active');
+            b.className = 'btn-admin-secondary';
+        });
+        btn.className = 'btn-admin-primary active';
         rangoActivoDias = parseInt(btn.dataset.rango, 10);
         const hasta = new Date();
         const desde = new Date();
         desde.setDate(desde.getDate() - rangoActivoDias);
-        document.getElementById('fechaDesde').value = desde.toISOString().split('T')[0];
-        document.getElementById('fechaHasta').value = hasta.toISOString().split('T')[0];
+        document.getElementById('fechaDesde').value = fechaLocal(desde);
+        document.getElementById('fechaHasta').value = fechaLocal(hasta);
         cargarVentasPeriodo();
     });
 });
@@ -170,11 +176,10 @@ async function cargarVentasPeriodo() {
         const maxIngresos = Math.max(...ventas.map(v => Number(v.ingresos)));
 
         if (tbody) {
-
             tbody.innerHTML = ventas.map(v => {
                 const ingresos = Number(v.ingresos);
                 const barPct = maxIngresos ? Math.round((ingresos / maxIngresos) * 100) : 0;
-                const fecha = new Date(v.fecha).toLocaleDateString('es-PE', { weekday: 'short', day: '2-digit', month: 'short' });
+                const fecha = new Date(v.fecha + 'T12:00:00').toLocaleDateString('es-PE', { weekday: 'short', day: '2-digit', month: 'short' });
                 return `<tr>
         <td data-label="Fecha"><strong>${fecha}</strong></td>
         <td data-label="Pedidos">${v.total_pedidos}</td>
@@ -191,7 +196,6 @@ async function cargarVentasPeriodo() {
         </td>
     </tr>`;
             }).join('');
-
         }
 
         if (tfoot) {
@@ -218,8 +222,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const hoy = new Date();
     const hace30 = new Date();
     hace30.setDate(hace30.getDate() - 30);
-    document.getElementById('fechaDesde').value = hace30.toISOString().split('T')[0];
-    document.getElementById('fechaHasta').value = hoy.toISOString().split('T')[0];
+    document.getElementById('fechaDesde').value = fechaLocal(hace30);
+    document.getElementById('fechaHasta').value = fechaLocal(hoy);
 
     await cargarTopProductos();
     await cargarVentasPeriodo();

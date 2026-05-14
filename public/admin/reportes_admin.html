@@ -12,7 +12,7 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="/public/css/admin.css" />
     <link rel="icon" type="image/png" href="/public/images/logo.jpeg">
-    
+
 </head>
 
 <body>
@@ -181,13 +181,13 @@
                     <!-- Filtros -->
                     <div class="admin-card mb-3">
                         <div class="admin-card-body">
-                            <div class="d-flex align-items-center gap-3 flex-wrap">
-                                <div class="d-flex gap-2">
+                            <div class="d-flex flex-column gap-2">
+                                <div class="d-flex gap-2 flex-wrap">
                                     <button class="btn-admin-secondary" data-rango="7">Últimos 7 días</button>
                                     <button class="btn-admin-primary" data-rango="30">Últimos 30 días</button>
                                     <button class="btn-admin-secondary" data-rango="90">Últimos 90 días</button>
                                 </div>
-                                <div class="d-flex align-items-center gap-2">
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
                                     <input type="date" id="fechaDesde" class="filter-date-input" />
                                     <span>—</span>
                                     <input type="date" id="fechaHasta" class="filter-date-input" />
@@ -203,7 +203,7 @@
                     <div class="row g-3 mb-3">
                         <div class="col-6 col-md-4 col-xl-2">
                             <div class="stat-card">
-                                <div ><i class="bi bi-bag-check"></i></div>
+                                <div><i class="bi bi-bag-check"></i></div>
                                 <div>
                                     <div class="stat-label">Total pedidos</div>
                                     <div class="stat-value" id="statTotalPedidos">—</div>
@@ -212,7 +212,7 @@
                         </div>
                         <div class="col-6 col-md-4 col-xl-2">
                             <div class="stat-card">
-                                <div ><i class="bi bi-cash-coin"></i></div>
+                                <div><i class="bi bi-cash-coin"></i></div>
                                 <div>
                                     <div class="stat-label">Ingresos</div>
                                     <div class="stat-value" id="statIngresosTotal">—</div>
@@ -221,7 +221,7 @@
                         </div>
                         <div class="col-6 col-md-4 col-xl-2">
                             <div class="stat-card">
-                                <div ><i class="bi bi-box-seam"></i></div>
+                                <div><i class="bi bi-box-seam"></i></div>
                                 <div>
                                     <div class="stat-label">Inversión total</div>
                                     <div class="stat-value" id="statInversionTotal">—</div>
@@ -239,7 +239,7 @@
                         </div>
                         <div class="col-6 col-md-4 col-xl-2">
                             <div class="stat-card">
-                                <div ><i class="bi bi-check-circle"></i></div>
+                                <div><i class="bi bi-check-circle"></i></div>
                                 <div>
                                     <div class="stat-label">Entregados</div>
                                     <div class="stat-value" id="statEntregados">—</div>
@@ -248,7 +248,7 @@
                         </div>
                         <div class="col-6 col-md-4 col-xl-2">
                             <div class="stat-card">
-                                <div ><i class="bi bi-x-circle"></i></div>
+                                <div><i class="bi bi-x-circle"></i></div>
                                 <div>
                                     <div class="stat-label">Cancelados</div>
                                     <div class="stat-value" id="statCancelados">—</div>

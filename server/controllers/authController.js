@@ -63,6 +63,10 @@ async function registro(req, res) {
         return res.status(400).json({ ok: false, mensaje: 'La contraseña debe tener al menos 6 caracteres.' });
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.(com|pe)$/.test(correo.trim())) {
+        return res.status(400).json({ ok: false, mensaje: 'Solo se permiten correos con dominio .com o .pe' });
+    }
+
     try {
         const existe = await query('SELECT id_usuario FROM usuarios WHERE correo = ?', [correo.trim().toLowerCase()]);
         if (existe.length > 0) {

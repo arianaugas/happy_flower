@@ -32,27 +32,15 @@ if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) {
     process.exit(1);
 }
 
-// SESIONES
-/* (ignorar esto) app.use(session({
-    secret: process.env.SESSION_SECRET || 'happyflower_secret_dev',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production', // Será true solo en producción con HTTPS
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 8,   // 8 horas
-    }
-}));*/
-
 const sessionStore = new MySQLStore({
-    host:               process.env.DB_HOST,
-    port:       parseInt(process.env.DB_PORT, 10) || 3306,
-    database:           process.env.DB_NAME,
-    user:               process.env.DB_USER,
-    password:           process.env.DB_PASS,
-    clearExpired:       true,
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT, 10) || 3306,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password:process.env.DB_PASS,
+    clearExpired:  true,
     checkExpirationInterval: 1000 * 60 * 15,  // limpia sesiones vencidas cada 15 min
-    expiration:         1000 * 60 * 60 * 8,   // 8 horas
+    expiration: 1000 * 60 * 60 * 8,   // 8 horas
     createDatabaseTable: true,                 // crea la tabla sessions automáticamente
 });
 
